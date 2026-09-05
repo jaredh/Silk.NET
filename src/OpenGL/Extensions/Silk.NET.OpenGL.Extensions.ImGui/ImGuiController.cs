@@ -236,12 +236,19 @@ namespace Silk.NET.OpenGL.Legacy.Extensions.ImGui
         private void SetPerFrameImGuiData(float deltaSeconds)
         {
             var io = ImGuiNET.ImGui.GetIO();
+            var size = _view.Size;
+            var framebufferSize = _view.FramebufferSize;
+
+            // Update here since Resize isn't raised on all platforms
+            _windowWidth = size.X;
+            _windowHeight = size.Y;
+
             io.DisplaySize = new Vector2(_windowWidth, _windowHeight);
 
             if (_windowWidth > 0 && _windowHeight > 0)
             {
-                io.DisplayFramebufferScale = new Vector2((float) _view.FramebufferSize.X / _windowWidth,
-                    (float) _view.FramebufferSize.Y / _windowHeight);
+                io.DisplayFramebufferScale = new Vector2((float) framebufferSize.X / _windowWidth,
+                    (float) framebufferSize.Y / _windowHeight);
             }
 
             io.DeltaTime = deltaSeconds; // DeltaTime is in seconds.
